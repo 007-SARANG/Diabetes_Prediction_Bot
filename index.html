@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Diabetes Prediction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background-color: #f5f5f5;
+    }
+    input, button {
+      margin: 10px 0;
+      padding: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h2>Diabetes Prediction Form</h2>
+
+  <label>Pregnancies: <input type="number" id="Pregnancies"></label><br>
+  <label>Glucose: <input type="number" id="Glucose"></label><br>
+  <label>Blood Pressure: <input type="number" id="BloodPressure"></label><br>
+  <label>Skin Thickness: <input type="number" id="SkinThickness"></label><br>
+  <label>Insulin: <input type="number" id="Insulin"></label><br>
+  <label>BMI: <input type="number" id="BMI" step="0.1"></label><br>
+  <label>Diabetes Pedigree Function: <input type="number" id="DiabetesPedigreeFunction" step="0.01"></label><br>
+  <label>Age: <input type="number" id="Age"></label><br>
+
+  <button onclick="predict()">Predict</button>
+
+  <div id="result"></div>
+
+  <script>
+    function predict() {
+      const data = {
+        Pregnancies: parseFloat(document.getElementById("Pregnancies").value),
+        Glucose: parseFloat(document.getElementById("Glucose").value),
+        BloodPressure: parseFloat(document.getElementById("BloodPressure").value),
+        SkinThickness: parseFloat(document.getElementById("SkinThickness").value),
+        Insulin: parseFloat(document.getElementById("Insulin").value),
+        BMI: parseFloat(document.getElementById("BMI").value),
+        DiabetesPedigreeFunction: parseFloat(document.getElementById("DiabetesPedigreeFunction").value),
+        Age: parseFloat(document.getElementById("Age").value)
+      };
+
+      fetch("http://localhost:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("result").innerText = 
+          `🧪 Probability of Diabetes: ${data.diabetes_chance_percent}%`;
+      })
+      .catch(error => {
+        document.getElementById("result").innerText = 
+          "Error contacting backend. Is the server running?";
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>
