@@ -59,7 +59,7 @@
         Age: parseFloat(document.getElementById("Age").value)
       };
 
-      fetch("https://diabetes-prediction-bot.onrender.com/predict", {  // <-- Replace here
+      fetch("https://diabetes-prediction-bot.onrender.com/predict", { // Your deployed backend URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -69,11 +69,9 @@
         document.getElementById("result").innerText = 
           `🧪 Probability of Diabetes: ${data.probability}%`;
       })
-
-      })
       .catch(error => {
         document.getElementById("result").innerText = 
-          "Error contacting backend. Is the server running?";
+          "❌ Error contacting backend. Is the server running?";
         console.error(error);
       });
     }
