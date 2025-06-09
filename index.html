@@ -67,7 +67,9 @@
       .then(response => response.json())
       .then(data => {
         document.getElementById("result").innerText = 
-          `🧪 Probability of Diabetes: ${data.diabetes_chance_percent}%`;
+          `🧪 Probability of Diabetes: ${data.probability}%`;
+      })
+
       })
       .catch(error => {
         document.getElementById("result").innerText = 
