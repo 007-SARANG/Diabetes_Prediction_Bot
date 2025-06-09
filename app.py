@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-import numpy as np
 import joblib
 
 app = Flask(__name__)
 CORS(app)
 
+# Load your trained model and scaler
 model = joblib.load('svm_diabetes_model.pkl')
 scaler = joblib.load('scaler.pkl')
 
@@ -27,9 +27,9 @@ def predict():
         float(data['Age'])
     ]
     scaled = scaler.transform([features])
-    probability = model.predict_proba(scaled)[0][1] * 100
+    probability = model.predict_proba(scaled)[0][1] * 100  # Probability of diabetes
     return jsonify({'probability': round(probability, 2)})
 
 if __name__ == '__main__':
+    # Run on port 10000 and accept connections from anywhere
     app.run(host='0.0.0.0', port=10000)
-
