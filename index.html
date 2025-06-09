@@ -59,7 +59,7 @@
         Age: parseFloat(document.getElementById("Age").value)
       };
 
-      fetch("http://localhost:5000/predict", {
+      fetch("https://diabetes-prediction-bot.onrender.com/predict", {  // <-- Replace here
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
