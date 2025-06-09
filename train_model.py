@@ -27,5 +27,3 @@ classifier.fit(X_train, Y_train)
 # Save model and scaler
 joblib.dump(classifier, 'svm_diabetes_model.pkl')
 joblib.dump(scaler, 'scaler.pkl')
-
-print("✅ Model and Scaler saved.")
