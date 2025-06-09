@@ -1,20 +1,23 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import numpy as np
 import joblib
 
-# Load the trained model and scaler
+# Load model and scaler
 model = joblib.load('svm_diabetes_model.pkl')
 scaler = joblib.load('scaler.pkl')
 
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/')
+def home():
+    return render_template('index.html')  # this serves the frontend
+
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
     try:
-        # Extract features in correct order
         features = [
             float(data['Pregnancies']),
             float(data['Glucose']),
@@ -25,12 +28,8 @@ def predict():
             float(data['DiabetesPedigreeFunction']),
             float(data['Age'])
         ]
-
-        # Convert and scale
         input_array = np.array([features])
         input_scaled = scaler.transform(input_array)
-
-        # Predict probability
         probability = model.predict_proba(input_scaled)[0][1] * 100
         return jsonify({"diabetes_chance_percent": round(probability, 2)})
 
@@ -39,4 +38,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)  # ✔️ For Render deployment
+    app.run(host='0.0.0.0', port=10000)
